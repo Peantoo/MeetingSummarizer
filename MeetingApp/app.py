@@ -7,6 +7,7 @@ from langchain import OpenAI, LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
 import streamlit as st
+from langchain.chains.summarize import load_summarize_chain
 
 app = Flask(__name__)
 
