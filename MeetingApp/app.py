@@ -52,9 +52,4 @@ def upload():
 
     return jsonify({'transcription': transcription_text, 'summary': summary_text}), 200
 
-if __name__ == '__main__':
-    try:
-        # Run Streamlit interface
-        streamlit_interface()
-    except Exception as e:
-        print(f"Error: {e}")
+
