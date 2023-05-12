@@ -1,6 +1,7 @@
 import os
 from io import BytesIO
 from transformers import pipeline
+from huggingsound import SpeechRecognitionModel
 import requests
 from flask import Flask, request, jsonify
 from langchain import OpenAI, LLMChain
@@ -15,20 +16,12 @@ app = Flask(__name__)
 APIKEY = os.environ.get("HF_API_KEY")
 os.environ['OPENAI_API_KEY'] = os.environ.get("OPENAI_API_KEY")
 
-# Speech-to-text
-API_URL = "https://api-inference.huggingface.co/models/jonatasgrosman/wav2vec2-large-xlsr-53-english"
-headers = {"Authorization": APIKEY}
-
-def query(audio_data):
-    response = requests.post(API_URL, headers=headers, data=audio_data)
-    return response.json()
+# Initialize the Speech Recognition Model
+model = SpeechRecognitionModel("jonatasgrosman/wav2vec2-large-xlsr-53-english")
 
 # Summarization
 llm = OpenAI(temperature=0)
 chain = load_summarize_chain(llm, chain_type="map_reduce")
-
-
-#summarizer = LLMChain(llm=llm, prompt=PromptTemplate("summarize {text}"), output_key="summary")
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -42,12 +35,11 @@ def upload():
     # Read the file into memory
     audio_data = BytesIO(file.read())
 
-    # Placeholder block for Speech-to-Text code
-    transcription_output = query(audio_data.getvalue())
-    transcription_text = transcription_output['text']
+    # Convert the audio to text using the Speech Recognition Model
+    transcription_text = model.transcribe(audio_data)
     
+    # Generate the summary using the Summarization Chain
     summary_output = chain.run(transcription_text)
-    #summary_output = summarizer.run(text=transcription_text)
     summary_text = summary_output['summary']
 
     return jsonify({'transcription': transcription_text, 'summary': summary_text}), 200
