@@ -1,4 +1,4 @@
-python==3.10
+
 torch
 transformers==4.28.1
 flask==2.3.2
