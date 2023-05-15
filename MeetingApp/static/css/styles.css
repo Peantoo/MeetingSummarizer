@@ -23,6 +23,11 @@ body {
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
   overflow: auto;
 }
+.summary-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
 .loading {
   display: none;
   position: fixed;
@@ -97,9 +102,7 @@ textarea {
 .volume-bar {
   width: 20px;
   background-color: green;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  border-radius: 10px;
+  margin-left: 20px;
+  height: 0;
   transition: height 0.3s ease;
 }
