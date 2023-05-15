@@ -47,10 +47,12 @@ def end_meeting():
                 audio.export(audio_file_path[:-len(audio_format)-1] + ".wav", format="wav")
 
                 # Use OpenAI's Whisper ASR model for transcription
-                model = whisper.load_model("base")
-                result = model.transcribe(audio_file_path[:-5] + ".wav")
-                transcript = result["text"]
-                print("Transcript:", transcript)
+                with open(audio_file_path[:-5] + ".wav", "rb") as audio_file:
+                    transcript = openai.Audio.transcribe(
+                        model="whisper-1",
+                        file=audio_file
+                    )
+                print("Transcript:", transcript.text)
             except Exception as e:
                 print("General Exception:", e)
                 return jsonify(error="An error occurred while processing the audio."), 500
