@@ -11,13 +11,15 @@
     <button onclick="startRecording()">Start Meeting</button>
     <button onclick="stopRecording()">End Meeting</button>
     <h2>Summary:</h2>
-    <div class="summary-box">
-      <pre id="summary"></pre>
+    <div class="summary-container">
+      <div class="summary-box">
+        <pre id="summary"></pre>
+      </div>
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+      </div>
+      <div id="volume-bar" class="volume-bar"></div>
     </div>
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-    </div>
-    <div id="volume-bar" class="volume-bar"></div>
     <script>
       let mediaRecorder;
       let recordedChunks = [];
