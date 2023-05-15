@@ -5,6 +5,7 @@ from flask import Flask, request, render_template, jsonify
 import openai
 from dotenv import load_dotenv
 from pydub import AudioSegment
+import whisper
 
 load_dotenv()
 
@@ -46,17 +47,13 @@ def end_meeting():
                 audio.export(audio_file_path[:-len(audio_format)-1] + ".wav", format="wav")
 
                 # Use OpenAI's Whisper ASR model for transcription
-                with open(audio_file_path[:-5] + ".wav", "rb") as audio_file:
-                    response = openai.Audio.create(
-                        audio=audio_file.read(),
-                        model="whisper-v1",
-                    )
-                transcript = response['transcript']
+                model = whisper.load_model("base")
+                result = model.transcribe(audio_file_path[:-5] + ".wav")
+                transcript = result["text"]
                 print("Transcript:", transcript)
             except Exception as e:
                 print("General Exception:", e)
                 return jsonify(error="An error occurred while processing the audio."), 500
-
             try:
                 MODEL = "gpt-3.5-turbo"
                 response = openai.ChatCompletion.create(
