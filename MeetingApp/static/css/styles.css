@@ -24,6 +24,7 @@ body {
   overflow: auto;
 }
 .summary-container {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: start;
@@ -82,6 +83,12 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 5px;
+}
+.button-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 button:hover {
