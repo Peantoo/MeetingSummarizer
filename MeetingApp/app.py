@@ -5,7 +5,6 @@ from flask import Flask, request, render_template, jsonify
 import openai
 from dotenv import load_dotenv
 from pydub import AudioSegment
-import whisper
 
 load_dotenv()
 
