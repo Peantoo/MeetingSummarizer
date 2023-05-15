@@ -36,6 +36,7 @@
       }
 
       function stopRecording() {
+        document.getElementById("loading").style.display = "block";
         mediaRecorder.stop();
         mediaRecorder.addEventListener("stop", () => {
           const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
@@ -53,6 +54,7 @@
             .then(response => response.json())
             .then(data => {
               document.getElementById("summary").innerText = data.summary;
+              document.getElementById("loading").style.display = "none";
             })
             .catch(console.error);
           };
