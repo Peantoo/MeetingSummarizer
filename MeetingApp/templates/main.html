@@ -8,10 +8,12 @@
   </head>
   <body>
     <h1>Meeting Summarizer</h1>
-    <button onclick="startRecording()">Start Meeting</button>
-    <button onclick="stopRecording()">End Meeting</button>
     <h2>Summary:</h2>
     <div class="summary-container">
+      <div class="button-container">
+        <button onclick="startRecording()">Start Meeting</button>
+        <button onclick="stopRecording()">End Meeting</button>
+      </div>
       <div class="summary-box">
         <pre id="summary"></pre>
       </div>
