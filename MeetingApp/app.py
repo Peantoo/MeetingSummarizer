@@ -40,7 +40,9 @@ def end_meeting():
                     audio_file.write(audio_data)
                     audio_file_path = audio_file.name
 
+                # Convert the audio data to a compatible format
                 audio = AudioSegment.from_file(audio_file_path, format=audio_format)
+                audio = audio.set_frame_rate(16000).set_sample_width(2)
                 audio.export(audio_file_path[:-len(audio_format)-1] + ".wav", format="wav")
 
                 # Use OpenAI's Whisper ASR model for transcription
