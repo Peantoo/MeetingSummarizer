@@ -2,7 +2,6 @@ import os
 import base64
 import tempfile
 from flask import Flask, request, render_template, jsonify
-import speech_recognition as sr
 import openai
 from dotenv import load_dotenv
 from pydub import AudioSegment
@@ -44,19 +43,14 @@ def end_meeting():
                 audio = AudioSegment.from_file(audio_file_path, format=audio_format)
                 audio.export(audio_file_path[:-len(audio_format)-1] + ".wav", format="wav")
 
-                r = sr.Recognizer()
-                with sr.AudioFile(audio_file_path[:-5] + ".wav") as source:
-                    audio = r.record(source)
-                transcript = r.recognize_google(audio)
+                # Use OpenAI's Whisper ASR model for transcription
+                with open(audio_file_path[:-5] + ".wav", "rb") as audio_file:
+                    response = openai.Audio.create(
+                        audio=audio_file.read(),
+                        model="whisper-v1",
+                    )
+                transcript = response['transcript']
                 print("Transcript:", transcript)
-            except sr.RequestError as e:
-                print("RequestError:", e)
-                return jsonify(error="Could not request results; {0}".format(e)), 500
-
-            except sr.UnknownValueError:
-                print("UnknownValueError")
-                return jsonify(error="Unknown error occurred"), 500
-
             except Exception as e:
                 print("General Exception:", e)
                 return jsonify(error="An error occurred while processing the audio."), 500
